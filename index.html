@@ -83,6 +83,10 @@
     .progress-fill{height:100%;background:linear-gradient(90deg,#2563EB,#16A34A);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
     .soal-num-badge{display:inline-block;background:var(--blue-lt);color:var(--blue);font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
     .soal-text{font-size:17px;font-weight:600;color:var(--gray-800);line-height:1.65;margin-bottom:18px}
+    .soal-text svg{display:block;max-width:100%;height:auto;margin:12px auto;border-radius:8px}
+    .soal-text img{display:block;max-width:100%;height:auto;margin:12px auto;border-radius:8px}
+    .soal-gambar-wrap{background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:12px;margin-bottom:14px;display:flex;justify-content:center;align-items:center}
+    .soal-gambar-wrap svg{max-width:100%;height:auto}
     .opsi-list{display:flex;flex-direction:column;gap:9px}
     .opsi-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 15px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);cursor:pointer;background:var(--white);text-align:left;font-family:'Nunito',sans-serif;font-size:15px;font-weight:500;color:var(--gray-800);transition:all .15s;width:100%}
     .opsi-btn:hover:not(.disabled){border-color:var(--blue);background:var(--blue-lt);color:var(--blue)}
@@ -210,6 +214,7 @@
     <div class="card" style="margin-bottom:0">
       <div class="soal-num-badge" id="soalNumBadge">Soal 1</div>
       <div class="soal-text" id="soalText"></div>
+      <div class="soal-gambar-wrap" id="soalGambar" style="display:none"></div>
       <div id="soalOpsi" class="opsi-list"></div>
       <div class="feedback-box" id="feedbackBox"></div>
     </div>
@@ -421,6 +426,13 @@ ATURAN BAHASA (wajib diikuti):
 - Hindari kata-kata terlalu formal atau kalimat yang terlalu panjang
 - Penjelasan (penjelasan) harus singkat, jelas, dan menggunakan kata-kata yang mudah dipahami anak
 
+ATURAN GAMBAR (sangat penting):
+- Jika soal membutuhkan ilustrasi visual (misal: bangun datar, bangun ruang, diagram, gambar hewan, tabel sederhana, garis bilangan, dll), tambahkan field "gambar" berisi kode SVG inline yang valid
+- SVG harus menggunakan viewBox, warna yang cerah dan menarik untuk anak SD
+- Jika soal tidak membutuhkan gambar, isi "gambar" dengan string kosong ""
+- Contoh kapan perlu gambar: soal tentang bentuk geometri, soal membaca diagram, soal yang menyebut "perhatikan gambar berikut"
+- SVG harus self-contained, tidak boleh menggunakan href ke URL eksternal
+
 ${selectedTipe==='pilihan_ganda'?`ATURAN PILIHAN GANDA (sangat penting):
 - Jawaban benar HARUS tersebar merata di antara A, B, C, dan D
 - Jangan menaruh jawaban benar hanya di A atau B terus
@@ -434,6 +446,7 @@ Format wajib:
   {
     "soal": "teks pertanyaan yang ramah anak",
     "tipe": "${selectedTipe}",
+    "gambar": "kode SVG inline jika soal butuh gambar, atau string kosong jika tidak perlu",
     "opsi": ${selectedTipe==='pilihan_ganda'?'{"A":"...","B":"...","C":"...","D":"..."}':selectedTipe==='benar_salah'?'{"A":"Benar","B":"Salah"}':'null'},
     "jawaban": "${selectedTipe!=='isian'?'huruf kunci jawaban benar (A/B/C/D), HARUS tersebar merata':'jawaban singkat 1-3 kata'}",
     "penjelasan": "penjelasan singkat dengan bahasa mudah dipahami anak SD"
@@ -478,7 +491,11 @@ function tampilkanSoal(){
   const s=soalList[currentIdx],total=soalList.length;
   document.getElementById('soalInfo').textContent='Soal '+(currentIdx+1)+' dari '+total;
   document.getElementById('soalNumBadge').textContent='Soal '+(currentIdx+1);
-  document.getElementById('soalText').textContent=s.soal;
+  document.getElementById('soalText').innerHTML=s.soal;
+  // Render gambar jika ada field gambar (SVG inline atau HTML)
+  const gambarWrap=document.getElementById('soalGambar');
+  if(s.gambar&&s.gambar.trim()){gambarWrap.innerHTML=s.gambar;gambarWrap.style.display='flex';}
+  else{gambarWrap.innerHTML='';gambarWrap.style.display='none';}
   document.getElementById('progressFill').style.width=((currentIdx+1)/total*100)+'%';
   document.getElementById('btnPrev').disabled=currentIdx===0;
   document.getElementById('btnNext').textContent=currentIdx===total-1?'🏁 Lihat Hasil':'Berikutnya →';
@@ -558,6 +575,7 @@ function tampilkanHasil(){
     const item=document.createElement('div');item.className='review-item';
     item.innerHTML=`<div style="margin-bottom:5px"><span class="review-badge ${ok?'benar':'salah'}">${ok?'✅ Benar':'❌ Salah'}</span><span style="font-size:11px;color:#94A3B8;font-weight:700">Soal ${i+1}</span></div>
 <div class="review-soal">${s.soal}</div>
+${s.gambar&&s.gambar.trim()?`<div class="soal-gambar-wrap" style="margin:8px 0;padding:8px;">${s.gambar}</div>`:''}
 <div class="review-jawaban">Jawabanmu: <span style="font-weight:700;color:${ok?'#16A34A':'#DC2626'}">${jwUser}</span>${!ok?' · Jawaban benar: <span style="font-weight:700;color:#16A34A">'+jwBenar+'</span>':''}</div>
 <div style="font-size:13px;color:#64748B;margin-top:4px">${s.penjelasan}</div>`;
     rl.appendChild(item);
