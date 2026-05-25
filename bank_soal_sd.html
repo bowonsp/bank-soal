@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bank Soal SD – Kurikulum Merdeka</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue:#2563EB;--blue-lt:#DBEAFE;--blue-dk:#1D4ED8;
+      --green:#16A34A;--green-lt:#DCFCE7;
+      --red:#DC2626;--red-lt:#FEE2E2;
+      --amber:#D97706;--amber-lt:#FEF3C7;
+      --gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;
+      --gray-400:#94A3B8;--gray-600:#475569;--gray-700:#334155;--gray-800:#1E293B;
+      --white:#fff;--radius:12px;--radius-sm:8px;
+      --shadow:0 2px 12px rgba(0,0,0,.08);
+    }
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#EFF6FF 0%,#F0FDF4 50%,#FFFBEB 100%);min-height:100vh;color:var(--gray-800)}
+    .site-header{background:var(--white);border-bottom:1px solid var(--gray-200);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    .logo{width:38px;height:38px;background:linear-gradient(135deg,#2563EB,#16A34A);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+    .site-header h1{font-family:'Baloo 2',cursive;font-size:19px;font-weight:800;line-height:1.2}
+    .site-header p{font-size:11px;color:var(--gray-400);font-weight:600}
+    .badge-km{margin-left:auto;background:var(--blue-lt);color:var(--blue);font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px}
+    .container{max-width:740px;margin:0 auto;padding:28px 16px 60px}
+    .card{background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-200);padding:22px;margin-bottom:14px;box-shadow:var(--shadow);animation:fadeUp .3s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .card-title{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:var(--gray-800);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+    @media(max-width:520px){.form-grid{grid-template-columns:1fr}}
+    .form-group{display:flex;flex-direction:column;gap:5px}
+    .form-group label{font-size:12px;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.4px}
+    select,input[type=text],input[type=password]{font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--gray-800);background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:9px 12px;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+    select:focus,input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+    .api-note{font-size:11px;color:var(--gray-400);margin-top:4px}
+    .kelas-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px}
+    @media(max-width:480px){.kelas-grid{grid-template-columns:repeat(3,1fr)}}
+    .kelas-btn{border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:10px 4px;text-align:center;cursor:pointer;background:var(--gray-50);transition:all .15s;user-select:none}
+    .kelas-btn .knum{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--gray-600);display:block;line-height:1}
+    .kelas-btn .kfase{font-size:10px;font-weight:700;color:var(--gray-400);margin-top:2px}
+    .kelas-btn:hover{border-color:var(--blue);background:var(--blue-lt)}
+    .kelas-btn.active{border-color:var(--blue);background:var(--blue-lt)}
+    .kelas-btn.active .knum{color:var(--blue)}
+    .kelas-btn.active .kfase{color:var(--blue-dk)}
+    .mapel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:16px}
+    .mapel-btn{border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:10px 12px;text-align:center;cursor:pointer;background:var(--gray-50);font-size:13px;font-weight:700;color:var(--gray-600);transition:all .15s;display:flex;align-items:center;gap:8px;user-select:none}
+    .mapel-btn .micon{font-size:18px}
+    .mapel-btn:hover{border-color:var(--blue);background:var(--blue-lt);color:var(--blue)}
+    .mapel-btn.active{border-color:var(--blue);background:var(--blue-lt);color:var(--blue)}
+    .bab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:0}
+    .bab-btn{border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:12px 14px;cursor:pointer;background:var(--white);text-align:left;transition:all .15s;user-select:none}
+    .bab-btn:hover{border-color:var(--blue);background:var(--blue-lt)}
+    .bab-btn.active{border-color:var(--blue);background:var(--blue-lt)}
+    .bab-num{font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+    .bab-nama{font-size:13px;font-weight:700;color:var(--gray-800);line-height:1.4}
+    .bab-btn.active .bab-nama{color:var(--blue)}
+    .tipe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+    .tipe-btn{border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-600);background:var(--gray-50);transition:all .15s;user-select:none}
+    .tipe-btn .ticon{font-size:20px;display:block;margin-bottom:4px}
+    .tipe-btn:hover,.tipe-btn.active{border-color:var(--blue);background:var(--blue-lt);color:var(--blue)}
+    .slider-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .slider-row label{font-size:12px;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+    .slider-row input[type=range]{flex:1;-webkit-appearance:none;height:6px;border-radius:99px;background:var(--gray-200);outline:none}
+    .slider-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--blue);border:3px solid white;box-shadow:0 0 0 2px var(--blue);cursor:pointer}
+    .slider-val{width:30px;height:30px;background:var(--blue);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+    .btn-generate{width:100%;padding:13px;border-radius:var(--radius-sm);border:none;background:linear-gradient(135deg,#2563EB,#16A34A);color:white;font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;cursor:pointer;transition:opacity .15s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-generate:hover:not(:disabled){opacity:.9;transform:translateY(-1px)}
+    .btn-generate:disabled{opacity:.45;cursor:not-allowed}
+    .error-box{background:var(--red-lt);border:1px solid #FECACA;border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--red);font-weight:600;margin-bottom:12px;display:none}
+    .loading-area{text-align:center;padding:60px 20px;display:none;animation:fadeUp .3s ease both}
+    .dots{display:flex;justify-content:center;gap:8px;margin-bottom:16px}
+    .dot{width:12px;height:12px;border-radius:50%;animation:bounce 1.2s ease-in-out infinite}
+    .dot:nth-child(1){background:#2563EB;animation-delay:0s}
+    .dot:nth-child(2){background:#16A34A;animation-delay:.2s}
+    .dot:nth-child(3){background:#D97706;animation-delay:.4s}
+    @keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1.2);opacity:1}}
+    .soal-area{display:none}
+    .soal-meta-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .soal-info{font-size:13px;font-weight:700;color:var(--gray-600)}
+    .soal-tag{background:var(--blue-lt);color:var(--blue);font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px}
+    .progress-track{height:8px;background:var(--gray-200);border-radius:99px;margin-bottom:20px;overflow:hidden}
+    .progress-fill{height:100%;background:linear-gradient(90deg,#2563EB,#16A34A);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+    .soal-num-badge{display:inline-block;background:var(--blue-lt);color:var(--blue);font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+    .soal-text{font-size:17px;font-weight:600;color:var(--gray-800);line-height:1.65;margin-bottom:18px}
+    .opsi-list{display:flex;flex-direction:column;gap:9px}
+    .opsi-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 15px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);cursor:pointer;background:var(--white);text-align:left;font-family:'Nunito',sans-serif;font-size:15px;font-weight:500;color:var(--gray-800);transition:all .15s;width:100%}
+    .opsi-btn:hover:not(.disabled){border-color:var(--blue);background:var(--blue-lt);color:var(--blue)}
+    .opsi-btn.selected{border-color:var(--blue);background:var(--blue-lt);color:var(--blue);font-weight:700}
+    .opsi-btn.correct{border-color:var(--green);background:var(--green-lt);color:var(--green);font-weight:700}
+    .opsi-btn.wrong{border-color:var(--red);background:var(--red-lt);color:var(--red);font-weight:700}
+    .opsi-label{width:26px;height:26px;flex-shrink:0;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+    .isian-input{width:100%;font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;padding:11px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);background:var(--gray-50);color:var(--gray-800);outline:none;transition:border-color .15s}
+    .isian-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+    .isian-input:disabled{background:var(--gray-100)}
+    .feedback-box{margin-top:12px;padding:11px 15px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;line-height:1.6;display:none;animation:fadeUp .25s ease both}
+    .feedback-box.benar{background:var(--green-lt);border:1px solid #86EFAC;color:#166534}
+    .feedback-box.salah{background:var(--red-lt);border:1px solid #FECACA;color:#991B1B}
+    .nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:18px;gap:10px}
+    .btn-nav{padding:9px 16px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);background:var(--white);color:var(--gray-600);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
+    .btn-nav:hover:not(:disabled){border-color:var(--gray-600);color:var(--gray-800)}
+    .btn-nav:disabled{opacity:.3;cursor:not-allowed}
+    .btn-cek{padding:9px 22px;border:none;border-radius:var(--radius-sm);background:var(--blue);color:white;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s}
+    .btn-cek:hover{background:var(--blue-dk)}
+    .hasil-area{display:none}
+    .hasil-card{text-align:center}
+    .skor-circle{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#2563EB,#16A34A);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 14px}
+    .skor-num{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:white;line-height:1}
+    .skor-sub{font-size:10px;font-weight:700;color:rgba(255,255,255,.8)}
+    .pesan-hasil{font-family:'Baloo 2',cursive;font-size:19px;font-weight:800;margin-bottom:3px}
+    .pesan-sub{font-size:13px;color:var(--gray-400);margin-bottom:22px}
+    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+    .stat-box{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:12px 8px}
+    .stat-val{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800}
+    .stat-lbl{font-size:11px;font-weight:700;color:var(--gray-400);margin-top:2px}
+    .hasil-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .btn-ulang{padding:10px 20px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);background:var(--white);color:var(--gray-700);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
+    .btn-ulang:hover{border-color:var(--gray-600)}
+    .btn-baru{padding:10px 20px;border:none;border-radius:var(--radius-sm);background:linear-gradient(135deg,#2563EB,#16A34A);color:white;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+    .review-title{font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;margin-bottom:12px}
+    .review-item{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;text-align:left}
+    .review-badge{font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;margin-right:8px}
+    .review-badge.benar{background:var(--green-lt);color:var(--green)}
+    .review-badge.salah{background:var(--red-lt);color:var(--red)}
+    .review-soal{font-size:14px;font-weight:600;color:var(--gray-800);margin:5px 0 3px}
+    .review-jawaban{font-size:13px;color:var(--gray-600)}
+    .site-footer{text-align:center;padding:20px;font-size:11px;color:var(--gray-400)}
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">📚</div>
+  <div>
+    <h1>Bank Soal SD</h1>
+    <p>Berbasis AI · Tanpa Kertas</p>
+  </div>
+  <span class="badge-km">Kurikulum Merdeka</span>
+</header>
+<main class="container">
+  <div id="setupArea">
+    <div class="card">
+      <div class="card-title">🔑 API Key OpenAI</div>
+      <div class="form-group">
+        <label>Masukkan API Key</label>
+        <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off"/>
+        <div class="api-note">🔒 Key tidak disimpan, hanya dipakai saat sesi ini berlangsung.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🎓 Pilih Kelas</div>
+      <div class="kelas-grid">
+        <div class="kelas-btn" data-kelas="1" onclick="pilihKelas(this)"><span class="knum">1</span><div class="kfase">Fase A</div></div>
+        <div class="kelas-btn" data-kelas="2" onclick="pilihKelas(this)"><span class="knum">2</span><div class="kfase">Fase A</div></div>
+        <div class="kelas-btn" data-kelas="3" onclick="pilihKelas(this)"><span class="knum">3</span><div class="kfase">Fase B</div></div>
+        <div class="kelas-btn" data-kelas="4" onclick="pilihKelas(this)"><span class="knum">4</span><div class="kfase">Fase B</div></div>
+        <div class="kelas-btn" data-kelas="5" onclick="pilihKelas(this)"><span class="knum">5</span><div class="kfase">Fase C</div></div>
+        <div class="kelas-btn" data-kelas="6" onclick="pilihKelas(this)"><span class="knum">6</span><div class="kfase">Fase C</div></div>
+      </div>
+      <div id="mapelSection" style="display:none">
+        <div class="card-title" style="margin-top:4px">📖 Pilih Mata Pelajaran</div>
+        <div class="mapel-grid" id="mapelGrid"></div>
+      </div>
+      <div id="babSection" style="display:none">
+        <div class="card-title" style="margin-top:4px">📋 Pilih Bab</div>
+        <div class="bab-grid" id="babGrid"></div>
+      </div>
+    </div>
+    <div class="card" id="settingCard" style="display:none">
+      <div class="card-title">⚙️ Pengaturan Soal</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tingkat Kesulitan</label>
+          <select id="kesulitan">
+            <option value="mudah">😊 Mudah</option>
+            <option value="sedang" selected>😐 Sedang</option>
+            <option value="sulit">😤 Sulit</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fokus Topik (opsional)</label>
+          <input type="text" id="fokus" placeholder="sub-topik spesifik..."/>
+        </div>
+      </div>
+      <div class="slider-row">
+        <label>Jumlah Soal:</label>
+        <input type="range" id="jumlahRange" min="3" max="15" value="5" step="1" oninput="document.getElementById('jumlahVal').textContent=this.value"/>
+        <div class="slider-val" id="jumlahVal">5</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Tipe Soal</div>
+      <div class="tipe-grid">
+        <div class="tipe-btn active" data-tipe="pilihan_ganda" onclick="toggleTipe(this)"><span class="ticon">🔘</span>Pilihan Ganda</div>
+        <div class="tipe-btn" data-tipe="isian" onclick="toggleTipe(this)"><span class="ticon">✏️</span>Isian Singkat</div>
+        <div class="tipe-btn" data-tipe="benar_salah" onclick="toggleTipe(this)"><span class="ticon">✅</span>Benar / Salah</div>
+      </div>
+      <div id="errorBox" class="error-box"></div>
+      <button class="btn-generate" id="btnGenerate" onclick="generateSoal()">✨ Generate Soal dengan AI</button>
+    </div>
+  </div>
+  <div id="loadingArea" class="loading-area">
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;margin-bottom:6px">AI sedang membuat soal...</div>
+    <div style="font-size:13px;color:var(--gray-400)">Mohon tunggu sebentar 🙏</div>
+  </div>
+  <div id="soalArea" class="soal-area">
+    <div class="soal-meta-bar">
+      <span class="soal-info" id="soalInfo">Soal 1 dari 5</span>
+      <span class="soal-tag" id="soalTag"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="card" style="margin-bottom:0">
+      <div class="soal-num-badge" id="soalNumBadge">Soal 1</div>
+      <div class="soal-text" id="soalText"></div>
+      <div id="soalOpsi" class="opsi-list"></div>
+      <div class="feedback-box" id="feedbackBox"></div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-nav" id="btnPrev" onclick="prevSoal()" disabled>← Sebelumnya</button>
+      <button class="btn-cek" id="btnCek" onclick="cekJawaban()">✓ Cek Jawaban</button>
+      <button class="btn-nav" id="btnNext" onclick="nextSoal()">Berikutnya →</button>
+    </div>
+  </div>
+  <div id="hasilArea" class="hasil-area">
+    <div class="card hasil-card">
+      <div style="font-size:48px;margin-bottom:8px" id="hasilEmoji">🎉</div>
+      <div class="skor-circle">
+        <div class="skor-num" id="skorNum">0/5</div>
+        <div class="skor-sub">SKOR</div>
+      </div>
+      <div class="pesan-hasil" id="pesanHasil"></div>
+      <div class="pesan-sub" id="pesanSub"></div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-val" id="stB" style="color:#16A34A">0</div><div class="stat-lbl">✅ Benar</div></div>
+        <div class="stat-box"><div class="stat-val" id="stS" style="color:#DC2626">0</div><div class="stat-lbl">❌ Salah</div></div>
+        <div class="stat-box"><div class="stat-val" id="stN" style="color:#2563EB">0</div><div class="stat-lbl">📊 Nilai</div></div>
+      </div>
+      <div class="hasil-actions">
+        <button class="btn-ulang" onclick="ulangSoal()">🔄 Ulangi Soal</button>
+        <button class="btn-baru" onclick="soalBaru()">✨ Soal Baru</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="review-title">📋 Pembahasan Soal</div>
+      <div id="reviewList"></div>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">Bank Soal SD – Kurikulum Merdeka · Powered by OpenAI GPT-4o-mini</footer>
+
+<script>
+const KURIKULUM = {
+  "Matematika": {
+    mapelIcon: "🔢",
+    bab: {
+      "1": ["Bilangan 1–10","Penjumlahan Dasar","Pengurangan Dasar","Bentuk dan Bangun","Bilangan 11–20","Penjumlahan s.d. 20","Pengurangan s.d. 20","Pengukuran Sederhana"],
+      "2": ["Bilangan s.d. 100","Penjumlahan 2 Angka","Pengurangan 2 Angka","Perkalian Dasar","Pembagian Dasar","Bangun Datar","Pengukuran Panjang","Data & Grafik"],
+      "3": ["Bilangan s.d. 1.000","Perkalian & Pembagian","Pecahan Sederhana","Keliling Bangun Datar","Luas Bangun Datar","Waktu & Kalender","Uang","Pengolahan Data"],
+      "4": ["Bilangan s.d. 10.000","KPK dan FPB","Pecahan","Desimal","Sudut","Keliling & Luas","Statistik","Koordinat"],
+      "5": ["Bilangan Bulat","Pecahan & Desimal","Persen","Bangun Ruang","Volume Kubus & Balok","Kecepatan & Debit","Skala","Statistik"],
+      "6": ["Bilangan Bulat Negatif","Rasio & Proporsi","Lingkaran","Bangun Ruang Gabungan","Volume & Luas Permukaan","Diagram & Grafik","Peluang Sederhana","Pemecahan Masalah"]
+    }
+  },
+  "Bahasa Indonesia": {
+    mapelIcon: "📝",
+    bab: {
+      "1": ["Bunyi & Huruf","Membaca Suku Kata","Kosakata Sehari-hari","Kalimat Sederhana","Cerita Bergambar","Puisi Anak","Teks Deskripsi","Menulis Kalimat"],
+      "2": ["Membaca Teks Pendek","Kosakata & Makna","Kalimat Tanya","Teks Narasi","Teks Petunjuk","Puisi & Pantun","Kata Sifat","Menulis Cerita"],
+      "3": ["Teks Narasi","Teks Deskripsi","Kosakata Baru","Kalimat Majemuk","Surat Sederhana","Teks Informasi","Puisi","Menulis Paragraf"],
+      "4": ["Teks Fiksi","Teks Non-fiksi","Kata Baku & Tidak Baku","Kalimat Efektif","Teks Prosedur","Teks Laporan","Pantun","Menulis Kreatif"],
+      "5": ["Teks Narasi Panjang","Teks Eksposisi","Majas & Gaya Bahasa","Teks Berita","Surat Resmi","Teks Pidato","Syair","Menulis Esai"],
+      "6": ["Teks Argumentasi","Teks Persuasi","Kosakata Ilmiah","Ulasan & Resensi","Laporan Penelitian","Debat Sederhana","Karya Sastra","Menulis Karangan"]
+    }
+  },
+  "IPAS": {
+    mapelIcon: "🔬",
+    bab: {
+      "1": ["Mengenal Diri","Lingkungan Sekitar","Makhluk Hidup","Cuaca Sehari-hari","Benda di Sekitar","Kebutuhan Hidup","Keluargaku","Aturan di Rumah"],
+      "2": ["Tumbuhan & Fungsinya","Hewan & Jenisnya","Siklus Hidup","Perubahan Cuaca","Benda Padat & Cair","Sumber Daya Alam","Lingkungan Bersih","Profesi & Pekerjaan"],
+      "3": ["Wujud Zat","Perubahan Wujud","Ekosistem Sederhana","Rantai Makanan","Kenampakan Alam","Sumber Daya Alam","Keragaman Budaya","Kerjasama Masyarakat"],
+      "4": ["Gaya & Gerak","Energi & Perubahannya","Sistem Tata Surya","Makhluk Hidup & Lingkungan","Sumber Daya Alam","Kegiatan Ekonomi","Keragaman Suku Bangsa","Teknologi Sederhana"],
+      "5": ["Zat Tunggal & Campuran","Perubahan Fisika & Kimia","Sistem Organ Manusia","Adaptasi Makhluk Hidup","Ekosistem & Keseimbangan","Peristiwa Sejarah","Kondisi Geografis","Perdagangan & Ekonomi"],
+      "6": ["Perkembangbiakan Makhluk Hidup","Listrik & Magnet","Sistem Tata Surya","Pelestarian Lingkungan","Peristiwa Kemerdekaan","NKRI & Keberagaman","Globalisasi","Teknologi & Kehidupan"]
+    }
+  },
+  "Pendidikan Pancasila": {
+    mapelIcon: "🇮🇩",
+    bab: {
+      "1": ["Mengenal Diri","Aturan di Sekolah","Keluarga Harmonis","Kebersamaan","Gotong Royong","Simbol Negara","Hak & Kewajiban","Cinta Tanah Air"],
+      "2": ["Pancasila","Kebiasaan Baik","Aturan Bersama","Kerjasama","Keberagaman Teman","Hormat & Sopan","Lingkungan Sekolah","Bangga Indonesia"],
+      "3": ["Sila-sila Pancasila","Hak & Kewajiban","Peraturan Sekolah","Norma Masyarakat","Kebinekaan","Musyawarah","Semangat Kebangsaan","Cinta Produk Lokal"],
+      "4": ["Nilai Pancasila","Hak & Kewajiban Warga","UUD 1945 Dasar","Keberagaman Budaya","Persatuan & Kesatuan","Demokrasi Pancasila","Pemerintahan Daerah","Wawasan Nusantara"],
+      "5": ["Pancasila sebagai Dasar Negara","Hak Asasi Manusia","Sistem Pemerintahan","Keberagaman & Toleransi","Norma Hukum","Bhineka Tunggal Ika","Peran Warga Negara","Cinta Tanah Air"],
+      "6": ["Makna Pancasila","Konstitusi & Hukum","Pemerintahan Indonesia","HAM & Perlindungan","Persatuan Bangsa","Kerjasama Internasional","Globalisasi & Nasionalisme","Peran Pemuda"]
+    }
+  },
+  "Bahasa Inggris": {
+    mapelIcon: "🌍",
+    bab: {
+      "1": ["Greetings & Farewells","Numbers 1–10","Colors","Animals","Family Members","Body Parts","Classroom Objects","Simple Commands"],
+      "2": ["Numbers 11–20","Days of the Week","Foods & Drinks","Toys & Games","My Home","Actions (Verbs)","Simple Questions","Short Stories"],
+      "3": ["Numbers & Counting","Time & Calendar","Weather","Plants","Community Helpers","Simple Sentences","Reading Short Text","Writing Words"],
+      "4": ["My School","Hobbies","Transport","Simple Past Tense","Describing People","Reading Short Story","Writing Sentences","Simple Dialogue"],
+      "5": ["Daily Activities","Nature & Environment","Health & Body","Simple Present Tense","Reading Paragraphs","Writing Simple Story","Conversations","Vocabulary Building"],
+      "6": ["Future Plans","Comparison","Reading Articles","Writing Paragraphs","Listening Comprehension","Storytelling","Descriptive Writing","Review & Fluency"]
+    }
+  },
+  "Seni Budaya": {
+    mapelIcon: "🎨",
+    bab: {
+      "1": ["Menggambar Bentuk","Mewarnai","Lagu Anak","Gerak & Tari","Prakarya Sederhana","Bercerita Seni","Mengenal Musik","Apresiasi Karya"],
+      "2": ["Melukis Ekspresi","Kolase","Lagu Daerah","Gerak Tari Daerah","Kerajinan Tangan","Musik Ritmis","Pertunjukan Seni","Budaya Lokal"],
+      "3": ["Karya 2 Dimensi","Karya 3 Dimensi","Seni Musik","Tari Tradisional","Kerajinan Anyaman","Seni Pertunjukan","Apresiasi Seni","Warisan Budaya"],
+      "4": ["Desain & Komposisi","Seni Batik","Alat Musik Daerah","Tari Kreasi","Kerajinan Bahan Alam","Drama Sederhana","Musik Ansambel","Budaya Nusantara"],
+      "5": ["Seni Rupa Nusantara","Karya Seni 3D","Musik Tradisional","Tari Nusantara","Kerajinan Tekstil","Seni Pertunjukan","Apresiasi Seni Rupa","Kreasi & Inovasi"],
+      "6": ["Berkarya Seni Rupa","Seni Musik Modern","Tari Kontemporer","Kerajinan & Desain","Pertunjukan Seni","Kritik Seni","Warisan Budaya Indonesia","Karya Cipta Sendiri"]
+    }
+  },
+  "PJOK": {
+    mapelIcon: "⚽",
+    bab: {
+      "1": ["Gerak Dasar","Permainan Sederhana","Kesehatan Diri","Keselamatan","Permainan Tradisional","Senam Dasar","Renang Pengenalan","Pola Hidup Sehat"],
+      "2": ["Gerak Lokomotor","Gerak Non-lokomotor","Permainan Bola","Atletik Dasar","Senam Irama","Kesehatan & Kebersihan","Pertolongan Pertama","Aktivitas Alam"],
+      "3": ["Permainan Bola Besar","Permainan Bola Kecil","Atletik","Bela Diri Dasar","Senam Lantai","Kesehatan Reproduksi","Pertolongan Pertama","Gizi & Makanan"],
+      "4": ["Bola Voli Dasar","Bola Basket Dasar","Lari & Lompat","Senam Artistik","Renang","Kesehatan Pribadi","Gizi Seimbang","Lingkungan Sehat"],
+      "5": ["Permainan Invasif","Permainan Net","Atletik Lanjutan","Pencak Silat Dasar","Senam Irama Lanjutan","Renang Gaya","Narkoba & Bahayanya","Kebugaran Jasmani"],
+      "6": ["Olahraga Pilihan","Atletik Kompetisi","Bela Diri","Senam Artistik Lanjutan","Renang Kompetisi","Kesehatan Remaja","Kebugaran & Latihan","Evaluasi & Penerapan"]
+    }
+  }
+};
+
+let selectedKelas=null,selectedMapel=null,selectedBab=null,selectedBabIdx=null,selectedTipe='pilihan_ganda';
+let soalList=[],currentIdx=0,jawabanUser={},sudahDicek={};
+
+function pilihKelas(el){
+  document.querySelectorAll('.kelas-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');selectedKelas=el.dataset.kelas;selectedMapel=null;selectedBab=null;
+  renderMapel();document.getElementById('babSection').style.display='none';document.getElementById('settingCard').style.display='none';
+}
+function renderMapel(){
+  const grid=document.getElementById('mapelGrid');grid.innerHTML='';
+  Object.keys(KURIKULUM).forEach(m=>{
+    const d=KURIKULUM[m],btn=document.createElement('div');
+    btn.className='mapel-btn';btn.dataset.mapel=m;
+    btn.innerHTML=`<span class="micon">${d.mapelIcon}</span>${m}`;
+    btn.onclick=function(){pilihMapel(this);};grid.appendChild(btn);
+  });
+  document.getElementById('mapelSection').style.display='block';
+}
+function pilihMapel(el){
+  document.querySelectorAll('.mapel-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');selectedMapel=el.dataset.mapel;selectedBab=null;
+  renderBab();document.getElementById('settingCard').style.display='none';
+}
+function renderBab(){
+  const grid=document.getElementById('babGrid');grid.innerHTML='';
+  const babs=KURIKULUM[selectedMapel].bab[selectedKelas]||[];
+  babs.forEach((nama,i)=>{
+    const btn=document.createElement('div');btn.className='bab-btn';btn.dataset.idx=i;
+    btn.innerHTML=`<div class="bab-num">Bab ${i+1}</div><div class="bab-nama">${nama}</div>`;
+    btn.onclick=function(){pilihBab(this,nama,i);};grid.appendChild(btn);
+  });
+  document.getElementById('babSection').style.display='block';
+  setTimeout(()=>document.getElementById('babSection').scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+function pilihBab(el,nama,idx){
+  document.querySelectorAll('.bab-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');selectedBab=nama;selectedBabIdx=idx+1;
+  document.getElementById('settingCard').style.display='block';
+  setTimeout(()=>document.getElementById('settingCard').scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+function toggleTipe(el){
+  document.querySelectorAll('.tipe-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');selectedTipe=el.dataset.tipe;
+}
+function showError(m){const e=document.getElementById('errorBox');e.style.display='block';e.textContent='⚠️ '+m;}
+function hideError(){document.getElementById('errorBox').style.display='none';}
+
+function acakOpsi(soal) {
+  if (soal.tipe !== 'pilihan_ganda') return soal;
+  const keys = Object.keys(soal.opsi);
+  const vals = keys.map(k => soal.opsi[k]);
+  for (let i = vals.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [vals[i], vals[j]] = [vals[j], vals[i]];
+  }
+  const nilaiJawaban = soal.opsi[soal.jawaban];
+  const newOpsi = {};
+  keys.forEach((k, i) => { newOpsi[k] = vals[i]; });
+  const jawabanBaru = keys.find(k => newOpsi[k] === nilaiJawaban);
+  return { ...soal, opsi: newOpsi, jawaban: jawabanBaru };
+}
+
+async function generateSoal() {
+  const apiKey=document.getElementById('apiKey').value.trim();
+  if(!apiKey){showError('Masukkan API Key OpenAI.');return;}
+  if(!selectedKelas){showError('Pilih kelas terlebih dahulu.');return;}
+  if(!selectedMapel){showError('Pilih mata pelajaran.');return;}
+  if(!selectedBab){showError('Pilih bab yang ingin diujikan.');return;}
+
+  const kesulitan=document.getElementById('kesulitan').value;
+  const fokus=document.getElementById('fokus').value.trim();
+  const jumlah=document.getElementById('jumlahRange').value;
+  const fase=selectedKelas<=2?'A':selectedKelas<=4?'B':'C';
+  const tipeMap={
+    pilihan_ganda:'pilihan ganda dengan 4 pilihan jawaban (A, B, C, D)',
+    isian:'isian singkat (jawaban 1–3 kata saja)',
+    benar_salah:'pernyataan yang dijawab Benar atau Salah'
+  };
+
+  const prompt = `Kamu adalah guru SD yang baik dan sabar. Tugasmu membuat soal latihan untuk anak SD sesuai Kurikulum Merdeka.
+
+Buat tepat ${jumlah} soal ${tipeMap[selectedTipe]} dengan ketentuan berikut:
+- Kelas: ${selectedKelas} SD (Fase ${fase})
+- Mata Pelajaran: ${selectedMapel}
+- Bab: Bab ${selectedBabIdx} – ${selectedBab}
+- Tingkat kesulitan: ${kesulitan}
+${fokus?'- Sub-topik khusus: '+fokus:''}
+
+ATURAN BAHASA (wajib diikuti):
+- Gunakan bahasa yang santai dan mudah dipahami anak kelas ${selectedKelas} SD
+- Tulis soal seperti guru berbicara langsung ke murid, contoh: "Berapa hasil dari...", "Manakah yang benar...", "Apa nama..."
+- Hindari kata-kata terlalu formal atau kalimat yang terlalu panjang
+- Penjelasan (penjelasan) harus singkat, jelas, dan menggunakan kata-kata yang mudah dipahami anak
+
+${selectedTipe==='pilihan_ganda'?`ATURAN PILIHAN GANDA (sangat penting):
+- Jawaban benar HARUS tersebar merata di antara A, B, C, dan D
+- Jangan menaruh jawaban benar hanya di A atau B terus
+- Dari ${jumlah} soal, usahakan jawaban benar terdistribusi ke semua huruf (A, B, C, D)
+- Semua pilihan jawaban harus masuk akal (jangan terlalu mudah ditebak)
+- Teks setiap pilihan harus berbeda jauh, bukan hanya sedikit berbeda`:''}
+
+Kembalikan HANYA array JSON valid, tanpa teks lain, tanpa backtick, tanpa markdown.
+Format wajib:
+[
+  {
+    "soal": "teks pertanyaan yang ramah anak",
+    "tipe": "${selectedTipe}",
+    "opsi": ${selectedTipe==='pilihan_ganda'?'{"A":"...","B":"...","C":"...","D":"..."}':selectedTipe==='benar_salah'?'{"A":"Benar","B":"Salah"}':'null'},
+    "jawaban": "${selectedTipe!=='isian'?'huruf kunci jawaban benar (A/B/C/D), HARUS tersebar merata':'jawaban singkat 1-3 kata'}",
+    "penjelasan": "penjelasan singkat dengan bahasa mudah dipahami anak SD"
+  }
+]`;
+
+  hideError();
+  document.getElementById('btnGenerate').disabled=true;
+  document.getElementById('setupArea').style.display='none';
+  document.getElementById('loadingArea').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  try {
+    const res=await fetch('https://api.openai.com/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+      body:JSON.stringify({
+        model:'gpt-4o-mini',max_tokens:3000,temperature:0.85,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data=await res.json();
+    if(data.error) throw new Error(data.error.message);
+    let raw=data.choices[0].message.content.trim().replace(/```json|```/g,'').trim();
+    let parsed=JSON.parse(raw);
+    if(!Array.isArray(parsed)||!parsed.length) throw new Error('Format tidak valid.');
+    soalList=parsed.map(s=>acakOpsi(s));
+    currentIdx=0;jawabanUser={};sudahDicek={};
+    document.getElementById('loadingArea').style.display='none';
+    document.getElementById('soalArea').style.display='block';
+    document.getElementById('soalTag').textContent=`Kelas ${selectedKelas} · ${selectedMapel} · Bab ${selectedBabIdx}`;
+    tampilkanSoal();
+  } catch(e) {
+    document.getElementById('loadingArea').style.display='none';
+    document.getElementById('setupArea').style.display='block';
+    document.getElementById('btnGenerate').disabled=false;
+    showError('Gagal: '+e.message);
+  }
+}
+
+function tampilkanSoal(){
+  const s=soalList[currentIdx],total=soalList.length;
+  document.getElementById('soalInfo').textContent='Soal '+(currentIdx+1)+' dari '+total;
+  document.getElementById('soalNumBadge').textContent='Soal '+(currentIdx+1);
+  document.getElementById('soalText').textContent=s.soal;
+  document.getElementById('progressFill').style.width=((currentIdx+1)/total*100)+'%';
+  document.getElementById('btnPrev').disabled=currentIdx===0;
+  document.getElementById('btnNext').textContent=currentIdx===total-1?'🏁 Lihat Hasil':'Berikutnya →';
+  const opsiEl=document.getElementById('soalOpsi');opsiEl.innerHTML='';
+  const fb=document.getElementById('feedbackBox');fb.style.display='none';fb.className='feedback-box';
+  const sudah=sudahDicek[currentIdx];
+  document.getElementById('btnCek').style.display=sudah?'none':'';
+  if(s.tipe==='isian'){
+    const inp=document.createElement('input');inp.type='text';inp.className='isian-input';inp.id='isianInput';
+    inp.placeholder='Tulis jawaban kamu di sini...';
+    if(jawabanUser[currentIdx]!==undefined) inp.value=jawabanUser[currentIdx];
+    if(sudah) inp.disabled=true;
+    inp.addEventListener('input',()=>{jawabanUser[currentIdx]=inp.value;});
+    inp.addEventListener('keydown',(e)=>{if(e.key==='Enter'&&!sudah) cekJawaban();});
+    opsiEl.appendChild(inp);
+    if(sudah) showFeedback((jawabanUser[currentIdx]||'').trim().toLowerCase()===s.jawaban.trim().toLowerCase(),s.jawaban,s.penjelasan);
+  } else {
+    Object.keys(s.opsi).forEach(k=>{
+      const btn=document.createElement('button');btn.type='button';
+      btn.className='opsi-btn'+(jawabanUser[currentIdx]===k&&!sudah?' selected':'');
+      if(sudah){
+        if(k===s.jawaban) btn.classList.add('correct');
+        else if(k===jawabanUser[currentIdx]) btn.classList.add('wrong');
+        btn.classList.add('disabled');btn.style.cursor='default';
+      }
+      btn.innerHTML='<span class="opsi-label">'+k+'</span><span>'+s.opsi[k]+'</span>';
+      if(!sudah) btn.addEventListener('click',()=>{
+        document.querySelectorAll('.opsi-btn').forEach(b=>b.classList.remove('selected'));
+        btn.classList.add('selected');jawabanUser[currentIdx]=k;
+      });
+      opsiEl.appendChild(btn);
+    });
+    if(sudah) showFeedback(jawabanUser[currentIdx]===s.jawaban,s.jawaban+(s.opsi[s.jawaban]?'. '+s.opsi[s.jawaban]:''),s.penjelasan);
+  }
+}
+
+function cekJawaban(){
+  const s=soalList[currentIdx];
+  if(s.tipe==='isian'){
+    const v=(document.getElementById('isianInput')?.value||'').trim();
+    if(!v){showError('Tulis jawaban dulu ya! 😊');return;}
+    hideError();jawabanUser[currentIdx]=v;
+  } else {
+    if(jawabanUser[currentIdx]===undefined){showError('Pilih jawaban dulu ya! 😊');return;}
+    hideError();
+  }
+  sudahDicek[currentIdx]=true;document.getElementById('btnCek').style.display='none';tampilkanSoal();
+}
+function showFeedback(benar,jawaban,penjelasan){
+  const fb=document.getElementById('feedbackBox');fb.style.display='block';fb.className='feedback-box '+(benar?'benar':'salah');
+  fb.innerHTML=benar?'✅ <strong>Jawaban benar!</strong> '+penjelasan:'❌ <strong>Belum tepat.</strong> Jawaban benar: <strong>'+jawaban+'</strong>. '+penjelasan;
+}
+function prevSoal(){if(currentIdx>0){currentIdx--;tampilkanSoal();}}
+function nextSoal(){if(currentIdx<soalList.length-1){currentIdx++;tampilkanSoal();}else tampilkanHasil();}
+
+function tampilkanHasil(){
+  document.getElementById('soalArea').style.display='none';document.getElementById('hasilArea').style.display='block';
+  let benar=0;
+  soalList.forEach((s,i)=>{
+    if(s.tipe==='isian'){if((jawabanUser[i]||'').trim().toLowerCase()===s.jawaban.trim().toLowerCase()) benar++;}
+    else{if(jawabanUser[i]===s.jawaban) benar++;}
+  });
+  const total=soalList.length,nilai=Math.round(benar/total*100);
+  document.getElementById('skorNum').textContent=benar+'/'+total;
+  document.getElementById('stB').textContent=benar;document.getElementById('stS').textContent=total-benar;document.getElementById('stN').textContent=nilai;
+  const[emoji,pesan,sub]=nilai>=90?['🏆','Luar Biasa!','Kamu sangat hebat, pertahankan terus!']:
+    nilai>=75?['🎉','Bagus Sekali!','Hampir sempurna, terus semangat!']:
+    nilai>=60?['👍','Cukup Baik!','Ada yang perlu dipelajari lagi nih!']:
+    nilai>=40?['💪','Ayo Semangat!','Pelajari kembali materinya!']:
+              ['📖','Jangan Menyerah!','Baca materi dulu, lalu coba lagi!'];
+  document.getElementById('hasilEmoji').textContent=emoji;document.getElementById('pesanHasil').textContent=pesan;document.getElementById('pesanSub').textContent=sub;
+  const rl=document.getElementById('reviewList');rl.innerHTML='';
+  soalList.forEach((s,i)=>{
+    let ok=s.tipe==='isian'?(jawabanUser[i]||'').trim().toLowerCase()===s.jawaban.trim().toLowerCase():jawabanUser[i]===s.jawaban;
+    const jwUser=jawabanUser[i]!==undefined?(s.opsi?(s.opsi[jawabanUser[i]]?jawabanUser[i]+'. '+s.opsi[jawabanUser[i]]:jawabanUser[i]):jawabanUser[i]):'(tidak dijawab)';
+    const jwBenar=s.opsi?(s.opsi[s.jawaban]?s.jawaban+'. '+s.opsi[s.jawaban]:s.jawaban):s.jawaban;
+    const item=document.createElement('div');item.className='review-item';
+    item.innerHTML=`<div style="margin-bottom:5px"><span class="review-badge ${ok?'benar':'salah'}">${ok?'✅ Benar':'❌ Salah'}</span><span style="font-size:11px;color:#94A3B8;font-weight:700">Soal ${i+1}</span></div>
+<div class="review-soal">${s.soal}</div>
+<div class="review-jawaban">Jawabanmu: <span style="font-weight:700;color:${ok?'#16A34A':'#DC2626'}">${jwUser}</span>${!ok?' · Jawaban benar: <span style="font-weight:700;color:#16A34A">'+jwBenar+'</span>':''}</div>
+<div style="font-size:13px;color:#64748B;margin-top:4px">${s.penjelasan}</div>`;
+    rl.appendChild(item);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function ulangSoal(){jawabanUser={};sudahDicek={};currentIdx=0;document.getElementById('hasilArea').style.display='none';document.getElementById('soalArea').style.display='block';tampilkanSoal();}
+function soalBaru(){document.getElementById('hasilArea').style.display='none';document.getElementById('setupArea').style.display='block';document.getElementById('btnGenerate').disabled=false;hideError();window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+</body>
+</html>
