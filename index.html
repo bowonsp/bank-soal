@@ -348,7 +348,7 @@ input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,9
   </div>
 </div>
 
-<footer class="site-footer">Bank Soal SD – Kurikulum Merdeka · Powered by OpenAI GPT-4.o</footer>
+<footer class="site-footer">Bank Soal SD – Kurikulum Merdeka · Powered by OpenAI GPT-4.0</footer>
 
 <script>
 // ==================== DATA KURIKULUM ====================
@@ -839,7 +839,7 @@ Kembalikan HANYA array JSON valid. Tanpa teks lain, tanpa backtick.
     const res = await fetch('https://api.openai.com/v1/chat/completions',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
-      body:JSON.stringify({model:'gpt-4.o',max_tokens:4000,temperature:0.3,messages:[{role:'user',content:prompt}]})
+      body:JSON.stringify({model:'gpt-4.0',max_tokens:4000,temperature:0.3,messages:[{role:'user',content:prompt}]})
     });
     const data = await res.json();
     if(data.error) throw new Error(data.error.message);
